@@ -1,0 +1,33 @@
+services:
+  totpvault:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: totpvault:1.0.0
+    restart: unless-stopped
+    init: true
+    ports:
+      - "127.0.0.1:8787:8000"
+    volumes:
+      - totpvault-data:/data
+      - type: bind
+        source: ${TOTPVault_MASTER_KEY_HOST_PATH:?set an absolute master-key path}
+        target: /run/secrets/totpvault_master_key
+        read_only: true
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=0700,uid=10001,gid=10001,noexec,nosuid,nodev
+    user: "10001:10001"
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 100
+    mem_limit: 256m
+    cpus: 1.0
+    stop_grace_period: 15s
+
+volumes:
+  totpvault-data:
+    name: totpvault-data
+

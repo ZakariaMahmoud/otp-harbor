@@ -1,0 +1,13 @@
+.git
+.github
+.pytest_cache
+.coverage
+.env
+.env.*
+.venv
+__pycache__
+*.py[cod]
+*.db
+*.key
+data
+tests
