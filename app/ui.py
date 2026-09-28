@@ -20,8 +20,8 @@ from app.ui_sessions import WebSession
 
 
 router = APIRouter(prefix="/ui", include_in_schema=False)
-SESSION_COOKIE = "tv_session"
-LOGIN_COOKIE = "tv_login"
+SESSION_COOKIE = "oh_session"
+LOGIN_COOKIE = "oh_login"
 
 
 def esc(value: object) -> str:
@@ -31,10 +31,10 @@ def esc(value: object) -> str:
 def page(title: str, content: str, *, client: ApiClient | None = None, csrf: str | None = None) -> HTMLResponse:
     nav = ""
     if client and csrf:
-        nav = f'''<nav><a href="/ui/">TotpVault</a><span>{esc(client.name)} · {esc(client.role)}</span>
+        nav = f'''<nav><a href="/ui/">OTP Harbor</a><span>{esc(client.name)} · {esc(client.role)}</span>
         <form method="post" action="/ui/logout"><input type="hidden" name="csrf" value="{esc(csrf)}"><button>Sign out</button></form></nav>'''
     document = f'''<!doctype html><html lang="en"><head><meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} · TotpVault</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} · OTP Harbor</title>
     <link rel="stylesheet" href="/ui/static/app.css"></head><body>{nav}<main><h1>{esc(title)}</h1>{content}</main></body></html>'''
     return HTMLResponse(document)
 

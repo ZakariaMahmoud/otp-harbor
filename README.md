@@ -1,15 +1,15 @@
-# TotpVault
+# OTP Harbor
 
 **A self-hosted, least-privilege TOTP service for trusted local applications.**
 
-TotpVault imports a TOTP QR code once, encrypts its seed at rest, and generates short-lived one-time passwords through an authenticated API or a small local web interface. It is designed for controlled automation without placing plaintext TOTP seeds, API keys, or generated codes in the database or logs.
+OTP Harbor imports a TOTP QR code once, encrypts its seed at rest, and generates short-lived one-time passwords through an authenticated API or a small local web interface. It is designed for controlled automation without placing plaintext TOTP seeds, API keys, or generated codes in the database or logs.
 
 > [!CAUTION]
-> TotpVault automates a second authentication factor. Running it beside the application consuming the OTP reduces the separation normally provided by a phone. It is not a replacement for FIDO2/WebAuthn or hardware-backed MFA.
+> OTP Harbor automates a second authentication factor. Running it beside the application consuming the OTP reduces the separation normally provided by a phone. It is not a replacement for FIDO2/WebAuthn or hardware-backed MFA.
 
-## Why TotpVault?
+## Why OTP Harbor?
 
-Some private automations need a TOTP but cannot use an interactive phone authenticator. Copying seeds into scripts, environment variables, or CI settings makes those long-lived credentials difficult to control. TotpVault provides a narrow alternative:
+Some private automations need a TOTP but cannot use an interactive phone authenticator. Copying seeds into scripts, environment variables, or CI settings makes those long-lived credentials difficult to control. OTP Harbor provides a narrow alternative:
 
 - enroll a QR code or `otpauth://totp/...` URI once;
 - encrypt the seed with a deployment key stored separately from SQLite;
@@ -49,7 +49,7 @@ Browser / trusted app
 Master key: separate runtime secret, never stored in SQLite or the image
 ```
 
-TotpVault intentionally runs as one worker in v1. SQLite and the in-memory rate limiter are not designed for multiple replicas.
+OTP Harbor intentionally runs as one worker in v1. SQLite and the in-memory rate limiter are not designed for multiple replicas.
 
 ## Requirements
 
@@ -63,18 +63,18 @@ TotpVault intentionally runs as one worker in v1. SQLite and the in-memory rate 
 ### 1. Build the image
 
 ```sh
-docker build -t totpvault:1.0.0 .
+docker build -t otp-harbor:1.0.0 .
 ```
 
 ### 2. Create the master key outside the repository
 
 ```sh
-install -d -m 0700 /etc/totpvault
-docker run --rm --entrypoint totpvault \
-  -v /etc/totpvault:/keys \
-  totpvault:1.0.0 generate-key --output /keys/master.key
-chown 10001:10001 /etc/totpvault/master.key
-chmod 0400 /etc/totpvault/master.key
+install -d -m 0700 /etc/otp-harbor
+docker run --rm --entrypoint otp-harbor \
+  -v /etc/otp-harbor:/keys \
+  otp-harbor:1.0.0 generate-key --output /keys/master.key
+chown 10001:10001 /etc/otp-harbor/master.key
+chmod 0400 /etc/otp-harbor/master.key
 ```
 
 Never place this file in the repository, image, database volume, environment, or routine database backup.
@@ -88,7 +88,7 @@ cp .env.example .env
 Set the absolute host path in `.env`:
 
 ```dotenv
-TOTPVault_MASTER_KEY_HOST_PATH=/etc/totpvault/master.key
+OTP_HARBOR_MASTER_KEY_HOST_PATH=/etc/otp-harbor/master.key
 ```
 
 `.env` and key files are ignored by Git. Verify that before every public commit.
@@ -96,14 +96,14 @@ TOTPVault_MASTER_KEY_HOST_PATH=/etc/totpvault/master.key
 ### 4. Initialize the database and administrator
 
 ```sh
-docker compose run --rm --entrypoint totpvault totpvault init-db
-docker compose run --rm --entrypoint totpvault totpvault \
+docker compose run --rm --entrypoint otp-harbor otp-harbor init-db
+docker compose run --rm --entrypoint otp-harbor otp-harbor \
   bootstrap-admin --name operator
 ```
 
 The second command prints the administrator API key once. Store it in a separate password or secret manager.
 
-### 5. Start TotpVault
+### 5. Start OTP Harbor
 
 ```sh
 docker compose up -d
@@ -118,15 +118,15 @@ Open [http://127.0.0.1:8787/ui/](http://127.0.0.1:8787/ui/) on the host and sign
 
 Administrators can import QR images or URIs, create and revoke clients, grant permissions, and delete credentials. OTP clients see only assigned credentials. The OTP view counts down and refreshes automatically at the next period.
 
-The browser never keeps API keys in local storage. Login exchanges the key for a random, short-lived server-side session. Restarting TotpVault invalidates all web sessions.
+The browser never keeps API keys in local storage. Login exchanges the key for a random, short-lived server-side session. Restarting OTP Harbor invalidates all web sessions.
 
 ### HTTPS deployments
 
 For a trusted reverse proxy terminating HTTPS, configure:
 
 ```dotenv
-TOTPVault_UI_SECURE_COOKIE=true
-TOTPVault_ALLOWED_HOSTS=vault.example.internal
+OTP_HARBOR_UI_SECURE_COOKIE=true
+OTP_HARBOR_ALLOWED_HOSTS=vault.example.internal
 ```
 
 Keep the application port private behind the proxy. Do not enable the secure cookie on plain HTTP because the browser will correctly refuse to send it.
@@ -206,7 +206,7 @@ Deletion cascades permissions. SQLite free pages may retain encrypted bytes unti
 Create a consistent SQLite backup:
 
 ```sh
-docker compose run --rm --entrypoint totpvault totpvault \
+docker compose run --rm --entrypoint otp-harbor otp-harbor \
   backup --output /data/vault-backup.db
 ```
 
@@ -214,7 +214,7 @@ Copy the backup to protected storage separately from master-key recovery materia
 
 To restore safely:
 
-1. Stop TotpVault and preserve the current volume.
+1. Stop OTP Harbor and preserve the current volume.
 2. Copy a verified backup to a new volume as `vault.db`.
 3. Set owner `10001:10001` and mode `0600`.
 4. Provide the matching master key through the normal secret mount.
@@ -229,7 +229,7 @@ Stop callers and take a verified backup first:
 ```sh
 docker compose run --rm \
   -v /secure/path/new.key:/run/secrets/new.key:ro \
-  --entrypoint totpvault totpvault \
+  --entrypoint otp-harbor otp-harbor \
   rotate-key --new-key-file /run/secrets/new.key
 ```
 
@@ -239,7 +239,7 @@ Rotation is one database transaction. Activate the new runtime secret before res
 
 Production deployments should consider a systemd encrypted credential, optionally TPM2-bound, instead of a persistent plaintext key file. Load the credential into `/run`, copy it with owner UID `10001` and mode `0400`, and bind-mount that runtime path into the container.
 
-This protects an offline filesystem copy better than a normal key file. It does not protect against host root while TotpVault is unlocked. Always maintain a separately protected recovery plan.
+This protects an offline filesystem copy better than a normal key file. It does not protect against host root while OTP Harbor is unlocked. Always maintain a separately protected recovery plan.
 
 ## Development
 
@@ -249,7 +249,7 @@ python3 -m venv .venv
 .venv/bin/python -m pip install -e '.[dev]'
 .venv/bin/pytest --cov=app
 .venv/bin/pip-audit --skip-editable
-docker build -t totpvault:1.0.0 .
+docker build -t otp-harbor:1.0.0 .
 ```
 
 Runtime dependencies and artifact hashes are pinned in `requirements.lock`. Regenerate it only during an intentional dependency update with `pip-compile --generate-hashes --strip-extras --output-file=requirements.lock pyproject.toml`, then rerun the full audit. The v1 schema is initialized explicitly with `init-db`; startup never performs an implicit migration.

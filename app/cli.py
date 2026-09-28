@@ -84,7 +84,7 @@ def cmd_backup(settings: Settings, output: Path) -> None:
 
 
 def parser() -> argparse.ArgumentParser:
-    result = argparse.ArgumentParser(prog="totpvault")
+    result = argparse.ArgumentParser(prog="otp-harbor")
     commands = result.add_subparsers(dest="command", required=True)
     commands.add_parser("init-db")
     bootstrap = commands.add_parser("bootstrap-admin")

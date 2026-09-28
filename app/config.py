@@ -28,17 +28,17 @@ class Settings:
     @classmethod
     def from_env(cls) -> "Settings":
         return cls(
-            database_url=os.getenv("TOTPVault_DATABASE_URL", "sqlite:////data/vault.db"),
-            master_key_file=Path(os.getenv("TOTPVault_MASTER_KEY_FILE", "/run/secrets/totpvault_master_key")),
-            max_qr_bytes=int(os.getenv("TOTPVault_MAX_QR_BYTES", str(2 * 1024 * 1024))),
-            otp_rate_limit=int(os.getenv("TOTPVault_OTP_RATE_LIMIT", "30")),
-            auth_failure_rate_limit=int(os.getenv("TOTPVault_AUTH_FAILURE_RATE_LIMIT", "20")),
-            rate_window_seconds=int(os.getenv("TOTPVault_RATE_WINDOW_SECONDS", "60")),
-            trust_proxy_headers=os.getenv("TOTPVault_TRUST_PROXY_HEADERS", "false").lower() == "true",
-            ui_session_minutes=int(os.getenv("TOTPVault_UI_SESSION_MINUTES", "30")),
-            ui_secure_cookie=os.getenv("TOTPVault_UI_SECURE_COOKIE", "false").lower() == "true",
+            database_url=os.getenv("OTP_HARBOR_DATABASE_URL", "sqlite:////data/vault.db"),
+            master_key_file=Path(os.getenv("OTP_HARBOR_MASTER_KEY_FILE", "/run/secrets/otp_harbor_master_key")),
+            max_qr_bytes=int(os.getenv("OTP_HARBOR_MAX_QR_BYTES", str(2 * 1024 * 1024))),
+            otp_rate_limit=int(os.getenv("OTP_HARBOR_OTP_RATE_LIMIT", "30")),
+            auth_failure_rate_limit=int(os.getenv("OTP_HARBOR_AUTH_FAILURE_RATE_LIMIT", "20")),
+            rate_window_seconds=int(os.getenv("OTP_HARBOR_RATE_WINDOW_SECONDS", "60")),
+            trust_proxy_headers=os.getenv("OTP_HARBOR_TRUST_PROXY_HEADERS", "false").lower() == "true",
+            ui_session_minutes=int(os.getenv("OTP_HARBOR_UI_SESSION_MINUTES", "30")),
+            ui_secure_cookie=os.getenv("OTP_HARBOR_UI_SECURE_COOKIE", "false").lower() == "true",
             allowed_hosts=tuple(host.strip() for host in os.getenv(
-                "TOTPVault_ALLOWED_HOSTS", "127.0.0.1,localhost,[::1],testserver"
+                "OTP_HARBOR_ALLOWED_HOSTS", "127.0.0.1,localhost,[::1],testserver"
             ).split(",") if host.strip()),
         )
 

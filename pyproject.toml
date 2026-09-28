@@ -3,7 +3,7 @@ requires = ["hatchling==1.27.0"]
 build-backend = "hatchling.build"
 
 [project]
-name = "totpvault"
+name = "otp-harbor"
 version = "1.0.0"
 description = "A small, security-focused, self-hosted TOTP service"
 readme = "README.md"
@@ -34,7 +34,7 @@ dev = [
 ]
 
 [project.scripts]
-totpvault = "app.cli:main"
+otp-harbor = "app.cli:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["app"]

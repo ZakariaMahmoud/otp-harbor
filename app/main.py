@@ -35,7 +35,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         app.state.master_key = b""
         app.state.engine.dispose()
 
-    app = FastAPI(title="TotpVault", version="1.0.0", docs_url=None, redoc_url=None,
+    app = FastAPI(title="OTP Harbor", version="1.0.0", docs_url=None, redoc_url=None,
                   openapi_url=None, lifespan=lifespan)
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=list(settings.allowed_hosts))
     app.state.settings = settings
@@ -53,7 +53,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             response = await call_next(request)
         except Exception:
             # Do not render exception messages: third-party errors can echo hostile input.
-            logging.getLogger("totpvault").error("unhandled request error request_id=%s", request.state.request_id)
+            logging.getLogger("otp_harbor").error("unhandled request error request_id=%s", request.state.request_id)
             return JSONResponse({"detail": "internal server error"}, status_code=500)
         response.headers["Cache-Control"] = "no-store"
         response.headers["X-Content-Type-Options"] = "nosniff"

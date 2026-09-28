@@ -1,18 +1,18 @@
 services:
-  totpvault:
+  otp-harbor:
     build:
       context: .
       dockerfile: Dockerfile
-    image: totpvault:1.0.0
+    image: otp-harbor:1.0.0
     restart: unless-stopped
     init: true
     ports:
       - "127.0.0.1:8787:8000"
     volumes:
-      - totpvault-data:/data
+      - otp-harbor-data:/data
       - type: bind
-        source: ${TOTPVault_MASTER_KEY_HOST_PATH:?set an absolute master-key path}
-        target: /run/secrets/totpvault_master_key
+        source: ${OTP_HARBOR_MASTER_KEY_HOST_PATH:?set an absolute master-key path}
+        target: /run/secrets/otp_harbor_master_key
         read_only: true
     read_only: true
     tmpfs:
@@ -28,6 +28,5 @@ services:
     stop_grace_period: 15s
 
 volumes:
-  totpvault-data:
-    name: totpvault-data
-
+  otp-harbor-data:
+    name: otp-harbor-data

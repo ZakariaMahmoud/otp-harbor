@@ -169,11 +169,11 @@ cryptography==50.0.1 \
     --hash=sha256:fc3ed7ebd2a8c96f5b166de0ab9b624996bef3b07bbeb19364dfb78222c22c80 \
     --hash=sha256:fd3718b960d0b5dd213cdf03f3bcb7000e69dda0de8b956061947ff6bcff5558 \
     --hash=sha256:ff838d62ec1bfce4f9ba7fa16f4a7b554cd8d0c299e6be37502161a660c84eef
-    # via totpvault (pyproject.toml)
+    # via otp-harbor (pyproject.toml)
 fastapi==0.141.1 \
     --hash=sha256:bfb91aa2d334c61cb35ba9a116fc123b3d3df31640b801cf57a7a78ec3f603b3 \
     --hash=sha256:e8822fc40db1e1858054d7a949a888695bc9bdce70139178e33bd2871a453ca1
-    # via totpvault (pyproject.toml)
+    # via otp-harbor (pyproject.toml)
 greenlet==3.5.6 \
     --hash=sha256:0616b8f878098c5681fd8f0dc92d887551717402342a70f0abcbfea5f5ad8a44 \
     --hash=sha256:06c0e933290fba8ffe53ead4ae1b8044b0e9754b75cebf381aa2bc3e50d82fac \
@@ -351,7 +351,7 @@ pillow==12.3.0 \
     --hash=sha256:fdafc9cce40277e0f7a0feabce0ee50dd2fa1800f3b38015e51296b5e814048d \
     --hash=sha256:fe3cca2e4e8a592be0f269a1ca4835c25199d9f3ce815c8491048f785b0a0198 \
     --hash=sha256:ffd0c5368496f41b0944be820fcb7a838aa6e623d250b01acf2643939c3f99d7
-    # via totpvault (pyproject.toml)
+    # via otp-harbor (pyproject.toml)
 pycparser==3.0 \
     --hash=sha256:600f49d217304a5902ac3c37e1281c9fe94e4d0489de643a9504c5cdfdfc6b29 \
     --hash=sha256:b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992
@@ -485,7 +485,7 @@ pydantic-core==2.46.5 \
 pyotp==2.10.0 \
     --hash=sha256:1df2f6a1bcc3bb0716172a5215ddc2f8c7c7fd26a13df9927d52e1746934836c \
     --hash=sha256:d01e9703443616b03c57c700b5cbffd56a1f929c1b0f8f03131bc78c1fca9d3f
-    # via totpvault (pyproject.toml)
+    # via otp-harbor (pyproject.toml)
 sqlalchemy==2.0.54 \
     --hash=sha256:03cbf8d9a67da618bd65500a5eb3ddac89caf4c61e99b2f03fa4a1952a0725a9 \
     --hash=sha256:0e7a76d5dce712ce50435d0f97181eb955ec27d138c004176f01282e063bac52 \
@@ -545,7 +545,7 @@ sqlalchemy==2.0.54 \
     --hash=sha256:f5c09090b1a7c4d389d1431f820931e8df318f82caafc53f9a72c872fef467c5 \
     --hash=sha256:f8cc6532f930c27974e9239e5ce5abebe7600ba9807cea4fcf42f1b6cab18fe7 \
     --hash=sha256:ffba7eb2d67c7505e82a0902aa854d8824b74c28a183820d6a8bd3cfd0f812c2
-    # via totpvault (pyproject.toml)
+    # via otp-harbor (pyproject.toml)
 starlette==1.7.0 \
     --hash=sha256:67f8e99895493dd2911a03f11314af6ceebeae4e704bb9f43dfc6a9db151c93e \
     --hash=sha256:c79f74ea63cff761804fbbfb182f1e0b440c2d07b164d24700c5a1bab5d6ff5d
@@ -570,7 +570,7 @@ typing-inspection==0.4.4 \
 uvicorn==0.54.0 \
     --hash=sha256:505bdb0f318731d45f1f712071fc781a8981f6847a31c902c9f5e652d4f67faf \
     --hash=sha256:a2e33cbfaa0306f8e6b0c13e0cb89d7d7a2da3e62b90c66e18c33d9807b28620
-    # via totpvault (pyproject.toml)
+    # via otp-harbor (pyproject.toml)
 zxing-cpp==3.1.1 \
     --hash=sha256:0343458a0fdf3f99c9dcff74dd09be6bae5d0d87a2f99de7876014317b939996 \
     --hash=sha256:037cbcaeb0cb12497fc15ced23f6b778fce8a6a1d1bbffddbffd004c6225744d \
@@ -603,4 +603,4 @@ zxing-cpp==3.1.1 \
     --hash=sha256:ec41a833dc1697e5360b5d9e2620fab1f3e92892b890c31fe85b50a10ca05217 \
     --hash=sha256:f4dae01111f323f46736fc21f05c14dcaaac06cea5fdc8fd994ba19f6f918c6e \
     --hash=sha256:fe8172f3c9b17f8fd40fba2ae0ba9728228caeff3587eabf5d99888891d02e62
-    # via totpvault (pyproject.toml)
+    # via otp-harbor (pyproject.toml)

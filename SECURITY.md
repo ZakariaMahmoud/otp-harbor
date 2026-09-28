@@ -1,4 +1,4 @@
-# TotpVault security model
+# OTP Harbor security model
 
 ## Reporting vulnerabilities
 
@@ -21,7 +21,7 @@ The master key and database must have separate storage and backup paths. AES-GCM
 5. **Reachable API port:** authentication, authorization, rate limiting, generic errors, and loopback binding reduce risk. They do not replace TLS on an untrusted network.
 6. **Backup theft:** equivalent to database theft when the key is backed up separately. Co-locating recovery key material defeats this protection.
 7. **Read-only host filesystem access:** a TPM-bound systemd credential can protect an offline disk copy. While the service runs, a decrypted, narrowly permissioned copy exists in `/run`; sufficiently privileged reads can obtain it. A plain-file fallback does not mitigate arbitrary filesystem disclosure.
-8. **Host root compromise:** not mitigated. Root can inspect process memory, runtime credentials, API traffic, SQLite, and generated OTPs. Application-layer encryption cannot provide complete protection while TotpVault is unlocked.
+8. **Host root compromise:** not mitigated. Root can inspect process memory, runtime credentials, API traffic, SQLite, and generated OTPs. Application-layer encryption cannot provide complete protection while OTP Harbor is unlocked.
 
 ## Implemented controls
 
@@ -42,7 +42,7 @@ The master key and database must have separate storage and backup paths. AES-GCM
 - The in-memory limiter resets on restart and is suitable only for the documented single worker.
 - Source-address throttling assumes direct connections. Proxy headers are intentionally ignored by default.
 - Python cannot guarantee immediate memory zeroization; immutable secret strings may remain until reclaimed.
-- Loopback HTTP cannot use a `Secure` session cookie. Set `TOTPVault_UI_SECURE_COOKIE=true` whenever the UI is served through HTTPS; the default is solely for the local-only deployment.
+- Loopback HTTP cannot use a `Secure` session cookie. Set `OTP_HARBOR_UI_SECURE_COOKIE=true` whenever the UI is served through HTTPS; the default is solely for the local-only deployment.
 - API-key verification performs an indexed public key-ID lookup before constant-time verifier comparison. Key IDs are not secrets.
 - Metadata and audit records are not encrypted.
 - SQLite does not erase deleted encrypted pages immediately.
@@ -52,11 +52,11 @@ The master key and database must have separate storage and backup paths. AES-GCM
 
 ## MFA limitation
 
-TotpVault automates a second factor. If it runs on the same host as the relying application, compromise of that host can collapse the intended factor separation. TotpVault is not more secure than a hardware-backed authenticator and should not be represented as such.
+OTP Harbor automates a second factor. If it runs on the same host as the relying application, compromise of that host can collapse the intended factor separation. OTP Harbor is not more secure than a hardware-backed authenticator and should not be represented as such.
 
 ## Operational assumptions
 
-- Keep Docker and the host patched; never mount the Docker socket into TotpVault.
+- Keep Docker and the host patched; never mount the Docker socket into OTP Harbor.
 - Permit access to the administrator key only from an isolated operator workflow.
 - Keep callers from logging Authorization headers or OTP response bodies.
 - Verify backups and recovery keys separately.

@@ -18,7 +18,7 @@ from app.models import ApiClient, AuditEvent, Credential, CredentialPermission
 from app.schemas import AuditOut, ClientCreate, ClientCreated, ClientOut, CredentialOut, OtpOut
 from app.totp import EnrollmentError, TotpConfig, generate_totp, parse_otpauth_uri
 
-logger = logging.getLogger("totpvault.audit")
+logger = logging.getLogger("otp_harbor.audit")
 router = APIRouter(prefix="/api/v1")
 
 

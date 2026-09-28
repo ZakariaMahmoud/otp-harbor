@@ -14,9 +14,9 @@ FROM python:3.12.14-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc07
 ENV PATH="/opt/venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    TOTPVault_DATABASE_URL=sqlite:////data/vault.db
+    OTP_HARBOR_DATABASE_URL=sqlite:////data/vault.db
 
-RUN groupadd --system --gid 10001 totpvault && useradd --system --uid 10001 --gid 10001 --no-create-home totpvault \
+RUN groupadd --system --gid 10001 otp-harbor && useradd --system --uid 10001 --gid 10001 --no-create-home otp-harbor \
     && mkdir -m 0700 /data && chown 10001:10001 /data
 COPY --from=builder /opt/venv /opt/venv
 USER 10001:10001

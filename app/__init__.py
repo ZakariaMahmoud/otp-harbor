@@ -1,2 +1,1 @@
-"""TotpVault application package."""
-
+"""OTP Harbor application package."""
