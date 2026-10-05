@@ -17,7 +17,7 @@ classifiers = [
 ]
 dependencies = [
   "cryptography==50.0.1",
-  "fastapi==0.141.1",
+  "fastapi==0.142.2",
   "pillow==12.3.0",
   "pyotp==2.10.0",
   "sqlalchemy==2.0.54",
